@@ -40,6 +40,7 @@ public class Board extends JPanel {
         }
     }
 
+    //For displaying the cells on the GUI
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(numColumns * cellSize, numRows * cellSize);
