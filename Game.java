@@ -7,16 +7,13 @@ import java.awt.event.KeyEvent;
 
 public class Game {
     private Board theBoard;
-    private Snake theSnake;
     private boolean gameOver = false;
     private String[] directions = {"left", "right", "up", "down"};
     private String currentDirection = "right";
 
     //Constructor
     public Game() {
-        Cell start = new Cell(0 ,0);
         theBoard = new Board(); 
-        theSnake = new Snake(start);
     }
 
     //Getter and Setter methods
@@ -26,14 +23,6 @@ public class Game {
 
     public Board getTheBoard() {
         return theBoard;
-    }
-
-    public void setTheSnake(Snake theSnake) {
-        this.theSnake = theSnake;
-    }
-
-    public Snake getTheSnake() {
-        return theSnake;
     }
 
     public void setGameOver(boolean gameOver) {
@@ -81,12 +70,16 @@ public class Game {
 
     public void run() {
         JFrame theWindow = new JFrame();
+        // theBoard.loadImages();
+
         theWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         theWindow.add(theBoard);
         theWindow.pack();
+        theWindow.setResizable(false);
         theWindow.setLocationRelativeTo(null);
         theWindow.setVisible(true);
         theWindow.addKeyListener(new Input());
+        int p = 98;
         
         while (gameOver == false) {
             
@@ -113,5 +106,4 @@ public class Game {
             }
         }
     }
-
 }
