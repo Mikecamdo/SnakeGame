@@ -39,8 +39,6 @@ public class Board extends JPanel implements ActionListener{
                 theBoard[i][j] = new Cell(i, j);
             }
         }
-        Cell start = new Cell(0 ,0);
-        theSnake = new Snake(start);
         run();
     }
 
@@ -78,7 +76,9 @@ public class Board extends JPanel implements ActionListener{
     }
 
     //Methods
-    public void run() {        
+    public void run() {  
+        Cell start = new Cell(0 ,0);
+        theSnake = new Snake(start);      
         addFood();
         theTimer = new Timer(200, this);    
         theTimer.start();
@@ -207,6 +207,13 @@ public class Board extends JPanel implements ActionListener{
         //    FontMetrics font_me=getFontMetrics(g.getFont());
            //g.drawString("Score:" + 0,(S_Width-font_me.stringWidth("Score:"+0))/2, g.getFont().getSize());
 
+        } else {
+            g.setColor(Color.red);
+            g.setFont(new Font(Font.SERIF, Font.BOLD, 60));
+            g.drawString("Game Over", 60, 80);
+            g.setFont(new Font(Font.SERIF, Font.BOLD, 40));
+            g.drawString("Press Enter to Replay", 20, 140);
+    
         }
     }
 
@@ -227,6 +234,9 @@ public class Board extends JPanel implements ActionListener{
             } else if ((keyCode == KeyEvent.VK_UP) && (currentDirection != "down")) {
                 currentDirection = "up";
                 // System.out.println("Up");
+            } else if ((keyCode == KeyEvent.VK_ENTER) && (gameOver)) {
+                gameOver = false;
+                run();
             }
         }
     }

@@ -8,6 +8,6 @@ public class Game extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        //int p = 0;
+        int p = 0;
     }
 }
