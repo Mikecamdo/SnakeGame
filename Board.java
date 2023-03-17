@@ -99,8 +99,8 @@ public class Board extends JPanel implements ActionListener{
     }
 
     public void eatFood() {
-        System.out.printf("Food: %d, %d\n", foodX, foodY);
-        System.out.printf("Snake: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
+        // System.out.printf("Food: %d, %d\n", foodX, foodY);
+        // System.out.printf("Snake: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
         if ((theSnake.getHead().getRow() == foodY) && (theSnake.getHead().getColumn() == foodX)) {
             System.out.println("Expanding!");
             theSnake.expand();
@@ -109,8 +109,13 @@ public class Board extends JPanel implements ActionListener{
     }
 
     public void outOfBounds() {
-        if ((theSnake.getHead().getRow() == 20) || (theSnake.getHead().getColumn() == 20)) {
+        if (((theSnake.getHead().getRow() == 19) && (currentDirection == "down"))
+         || ((theSnake.getHead().getColumn() == 19) && (currentDirection == "right"))
+         || ((theSnake.getHead().getRow() == 0) && (currentDirection == "up"))
+         || ((theSnake.getHead().getColumn() == 0) && (currentDirection == "left"))) {
             System.out.println("GAME OVER!!!");
+            gameOver = true;
+            theTimer.stop();
         }
     }
 
@@ -214,10 +219,10 @@ public class Board extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent arg) {
+        outOfBounds();
         if (!gameOver) {
             move();
             eatFood();
-            outOfBounds();
         }
         // System.out.printf("Snake at: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
         repaint();
