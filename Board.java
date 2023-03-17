@@ -197,8 +197,11 @@ public class Board extends JPanel implements ActionListener{
                 if (i == 0) {
                     g.setColor(Color.green);
                     g.fillRect(head.getColumn() * cellSize, head.getRow() * cellSize, cellSize, cellSize);    
-                } else {
+                } else if (i % 2 == 0) {
                     g.setColor(new Color(50,180,0));
+                    g.fillRect(body.get(i).getColumn() * cellSize, body.get(i).getRow() * cellSize, cellSize, cellSize);    
+                } else {
+                    g.setColor(new Color(50,220,0));
                     g.fillRect(body.get(i).getColumn() * cellSize, body.get(i).getRow() * cellSize, cellSize, cellSize);    
                 }
             }
