@@ -1,6 +1,6 @@
 public class Launcher {
     public static void main(String[] args) {
-        Game newGame = new Game();
+        Board newGame = new Board();
         newGame.run();
     }
 }
