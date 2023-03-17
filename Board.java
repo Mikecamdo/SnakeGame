@@ -30,6 +30,7 @@ public class Board extends JPanel implements ActionListener{
 
     //Constructor
     public Board() {
+        this.setFocusable(true);
         this.addKeyListener(new Input());
         theBoard = new Cell[numRows][numColumns];
         for (int i = 0; i < numRows; i++) {
@@ -39,6 +40,7 @@ public class Board extends JPanel implements ActionListener{
         }
         Cell start = new Cell(0 ,0);
         theSnake = new Snake(start);
+        run();
     }
 
     //Getter and Setter methods
@@ -96,14 +98,17 @@ public class Board extends JPanel implements ActionListener{
         }
     }
 
+    public void eatFood() {
+        if ((theSnake.getHead().getRow() == foodX) && (theSnake.getHead().getColumn() == foodY)) {
+            //System.out.println("Expanding!");
+            theSnake.expand();
+            addFood();
+        }
+    }
+
     public Cell getNext(Cell current, String direction) {
         int row = current.getRow();
         int column = current.getColumn();
-        //
-        // System.out.printf("Row: %d\n", row);
-        // System.out.printf("Column: %d\n", column);
-        System.out.printf("Direction: %s\n", direction);
-        System.out.printf("Before: %d, %d\n", row, column);
 
         if (direction == "left") {
             column -= 1;
@@ -114,15 +119,12 @@ public class Board extends JPanel implements ActionListener{
         } else if (direction == "up") {
             row -= 1;
         }
-        System.out.printf("After: %d, %d\n", row, column);
 
         Cell next = theBoard[row][column];
-        System.out.printf("After After: %d, %d\n", next.getRow(), next.getColumn());
         return next;
     }
 
     public void move() {
-        // System.out.println("MOVING");
         theSnake.move(getNext(theSnake.getHead(), currentDirection));
     }
 
@@ -163,13 +165,15 @@ public class Board extends JPanel implements ActionListener{
             Cell head = theSnake.getHead();
             LinkedList<Cell> body = theSnake.getBody();
             int length = theSnake.getBody().size();
-
-            g.setColor(Color.green);
-            g.fillRect(head.getColumn() * cellSize, head.getRow() * cellSize, cellSize, cellSize);
             
             for(int i = 0; i < length; i++) {
-                g.setColor(new Color(50,180,0));
-                g.fillRect(body.get(i).getColumn() * cellSize, body.get(i).getRow() * cellSize, cellSize, cellSize);
+                if (i == 0) {
+                    g.setColor(Color.green);
+                    g.fillRect(head.getColumn() * cellSize, head.getRow() * cellSize, cellSize, cellSize);    
+                } else {
+                    g.setColor(new Color(50,180,0));
+                    g.fillRect(body.get(i).getColumn() * cellSize, body.get(i).getRow() * cellSize, cellSize, cellSize);    
+                }
             }
         //    g.setColor(Color.blue);
         //    g.setFont(new Font("Ink Free",Font.BOLD,40));
@@ -186,16 +190,16 @@ public class Board extends JPanel implements ActionListener{
 
             if ((keyCode == KeyEvent.VK_LEFT) && (currentDirection != "right")) {
                 currentDirection = "left";
-                System.out.println("Left");
+                // System.out.println("Left");
             } else if ((keyCode == KeyEvent.VK_DOWN) && (currentDirection != "up")) {
                 currentDirection = "down";
-                System.out.println("Down");
+                // System.out.println("Down");
             } else if ((keyCode == KeyEvent.VK_RIGHT) && (currentDirection != "left")) {
                 currentDirection = "right";
-                System.out.println("Right");
+                // System.out.println("Right");
             } else if ((keyCode == KeyEvent.VK_UP) && (currentDirection != "down")) {
                 currentDirection = "up";
-                System.out.println("Up");
+                // System.out.println("Up");
             }
         }
     }
@@ -204,8 +208,9 @@ public class Board extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent arg) {
         if (!gameOver) {
             move();
+            eatFood();
         }
-        System.out.printf("Snake at: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
+        // System.out.printf("Snake at: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
         repaint();
     }
 
