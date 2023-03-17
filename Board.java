@@ -23,6 +23,7 @@ public class Board extends JPanel implements ActionListener{
     private String[] directions = {"left", "right", "up", "down"};
     private String currentDirection = "right";
     private boolean gameOver = false;
+    private boolean isExpanding = false;
 
     private Image head;
     private Image body;
@@ -105,6 +106,7 @@ public class Board extends JPanel implements ActionListener{
             System.out.println("Expanding!");
             theSnake.expand();
             addFood();
+            isExpanding = true;
         }
     }
 
@@ -116,6 +118,17 @@ public class Board extends JPanel implements ActionListener{
             System.out.println("GAME OVER!!!");
             gameOver = true;
             theTimer.stop();
+        } else if (!isExpanding) {
+            LinkedList<Cell> body = theSnake.getBody();
+            int length = theSnake.getBody().size();
+            
+            for(int i = 1; i < length; i++) {
+                if ((body.get(i).getRow() == body.get(0).getRow()) && (body.get(i).getColumn() == body.get(0).getColumn())) {
+                    System.out.println("GAME OVER!!!");
+                    gameOver = true;
+                    theTimer.stop();
+                }
+            }    
         }
     }
 
@@ -139,6 +152,7 @@ public class Board extends JPanel implements ActionListener{
 
     public void move() {
         theSnake.move(getNext(theSnake.getHead(), currentDirection));
+        isExpanding = false;
     }
 
     // public void loadImages() {
