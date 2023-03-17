@@ -9,7 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Board extends JPanel implements ActionListener{
     private Cell[][] theBoard; //the playing surface
@@ -228,6 +232,28 @@ public class Board extends JPanel implements ActionListener{
                 g.drawString("Score: " + length, 130, 180);
             } else {
                 g.drawString("Score: " + length, 120, 180);
+            }
+            try {
+                File file = new File("highScore.txt");
+                Scanner input = new Scanner(file);  
+                String theHighScore = input.nextLine();
+                int highScore = Integer.parseInt(theHighScore);
+                
+                if (length > highScore) {
+                    try {
+                        FileWriter output = new FileWriter(file, false);
+                        output.write(Integer.toString(length));
+                        output.close();
+                    } catch (IOException e) {
+                        System.out.println("Could not save new high score");
+                    }
+                    highScore = length;
+                }
+
+                g.drawString("High Score: " + highScore, 80, 220);
+                input.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Failed to retrieve the high score");
             }
         }
     }
