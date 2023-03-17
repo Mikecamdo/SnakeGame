@@ -11,9 +11,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class Board extends JPanel {
+public class Board extends JPanel implements ActionListener{
     private Cell[][] theBoard; //the playing surface
     private Snake theSnake;
+    private Timer theTimer;
     private int numRows = 20;
     private int numColumns = 20;
     private int cellSize = 20;
@@ -29,6 +30,7 @@ public class Board extends JPanel {
 
     //Constructor
     public Board() {
+        this.addKeyListener(new Input());
         theBoard = new Cell[numRows][numColumns];
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
@@ -74,20 +76,18 @@ public class Board extends JPanel {
 
     //Methods
     public void run() {
-        JFrame theWindow = new JFrame();
-        // theBoard.loadImages();
-
-        theWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        theWindow.add(new Board());
-        theWindow.pack();
-        theWindow.setResizable(false);
-        theWindow.setLocationRelativeTo(null);
-        theWindow.setVisible(true);
-        theWindow.addKeyListener(new Input());
         //int p = 98;
         
+        addFood();
+        theTimer = new Timer(200, this);    
+        theTimer.start();
+
+
         // while (gameOver == false) {
-        //     theBoard.m
+        //     int delay = 20000;
+        //     theTimer = new Timer(delay, this);    
+        //     theTimer.start();
+        //     move();
         // }
     }
 
@@ -100,6 +100,7 @@ public class Board extends JPanel {
                 theBoard[row][column].setHasFood(true);
                 foodX = row;
                 foodY = column;
+                System.out.printf("Food generated at: %d, %d\n", foodX, foodY);
                 return;
             }
         }
@@ -108,6 +109,8 @@ public class Board extends JPanel {
     public Cell getNext(Cell current, String direction) {
         int row = current.getRow();
         int column = current.getColumn();
+        System.out.printf("Row: %d\n", row);
+        System.out.printf("Column: %d\n", column);
 
         if (direction == "left") {
             column -= 1;
@@ -125,6 +128,7 @@ public class Board extends JPanel {
 
     public void move() {
         theSnake.move(getNext(theSnake.getHead(), currentDirection));
+        System.out.println("POOP");
     }
 
     // public void loadImages() {
@@ -145,7 +149,6 @@ public class Board extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int d = 3;
 
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
@@ -155,9 +158,12 @@ public class Board extends JPanel {
             }
         }
 
-        if(true){
+        if (!gameOver) {
             g.setColor(Color.red);
-            g.fillOval(foodX, foodY, cellSize, cellSize);
+            // foodX = 10;
+            // foodY = 10;
+            System.out.printf("Printing food at: %d, %d\n", foodX, foodY);
+            g.fillOval(foodX * cellSize, foodY * cellSize, cellSize, cellSize);
 
             Cell head = theSnake.getHead();
             LinkedList<Cell> body = theSnake.getBody();
@@ -199,5 +205,14 @@ public class Board extends JPanel {
         }
     }
 
+    @Override
+    public void actionPerformed(ActionEvent arg) {
+        int u = 98;
+        if (!gameOver) {
+            move();
+        }
+        System.out.printf("Snake at: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
+        repaint();
+    }
 
 }
