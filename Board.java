@@ -1,9 +1,6 @@
 import java.util.Random;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Image;
-import java.sql.RowIdLifetime;
-import javax.swing.ImageIcon;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,10 +25,6 @@ public class Board extends JPanel implements ActionListener{
     private String currentDirection = "right";
     private boolean gameOver = false;
     private boolean isExpanding = false;
-
-    private Image head;
-    private Image body;
-    private Image food;
 
     //Constructor
     public Board() {
@@ -98,17 +91,13 @@ public class Board extends JPanel implements ActionListener{
                 theBoard[row][column].setHasFood(true);
                 foodX = row;
                 foodY = column;
-                System.out.printf("Food generated at: %d, %d\n", foodX, foodY);
                 return;
             }
         }
     }
 
     public void eatFood() {
-        // System.out.printf("Food: %d, %d\n", foodX, foodY);
-        // System.out.printf("Snake: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
         if ((theSnake.getHead().getRow() == foodY) && (theSnake.getHead().getColumn() == foodX)) {
-            System.out.println("Expanding!");
             theSnake.expand();
             addFood();
             isExpanding = true;
@@ -120,7 +109,6 @@ public class Board extends JPanel implements ActionListener{
          || ((theSnake.getHead().getColumn() == 19) && (currentDirection == "right"))
          || ((theSnake.getHead().getRow() == 0) && (currentDirection == "up"))
          || ((theSnake.getHead().getColumn() == 0) && (currentDirection == "left"))) {
-            System.out.println("GAME OVER!!! 1");
             gameOver = true;
             theTimer.stop();
         } else if (!isExpanding) {
@@ -129,7 +117,6 @@ public class Board extends JPanel implements ActionListener{
             
             for(int i = 1; i < length; i++) {
                 if ((body.get(i).getRow() == body.get(0).getRow()) && (body.get(i).getColumn() == body.get(0).getColumn())) {
-                    System.out.println("GAME OVER!!! 2");
                     gameOver = true;
                     theTimer.stop();
                 }
@@ -160,16 +147,6 @@ public class Board extends JPanel implements ActionListener{
         isExpanding = false;
     }
 
-    // public void loadImages() {
-    //     ImageIcon theHead = new ImageIcon("C:\\Users\\mikec_g1kgiu8\\OneDrive\\Desktop\\Personal Projects\\SnakeGame\\Sprites\\Head.png");
-    //     ImageIcon theBody = new ImageIcon("C:\\Users\\mikec_g1kgiu8\\OneDrive\\Desktop\\Personal Projects\\SnakeGame\\Sprites\\Body.png");
-    //     ImageIcon theFood = new ImageIcon("C:\\Users\\mikec_g1kgiu8\\OneDrive\\Desktop\\Personal Projects\\SnakeGame\\Sprites\\Food.png");
-
-    //     head = theHead.getImage();
-    //     body = theBody.getImage();
-    //     food = theFood.getImage();
-    // }
-
     //For displaying the cells on the GUI
     @Override
     public Dimension getPreferredSize() {
@@ -189,9 +166,6 @@ public class Board extends JPanel implements ActionListener{
 
         if (!gameOver) {
             g.setColor(Color.red);
-            // foodX = 10;
-            // foodY = 10;
-            //System.out.printf("Printing food at: %d, %d\n", foodX, foodY);
             g.fillOval(foodX * cellSize, foodY * cellSize, cellSize, cellSize);
 
             Cell head = theSnake.getHead();
@@ -213,11 +187,6 @@ public class Board extends JPanel implements ActionListener{
             g.setColor(Color.darkGray);
             g.setFont(new Font(Font.SERIF, Font.BOLD, 20));
             g.drawString("Score: " + (length - 1), 0, 20);
-        //    g.setColor(Color.blue);
-        //    g.setFont(new Font("Ink Free",Font.BOLD,40));
-        //    FontMetrics font_me=getFontMetrics(g.getFont());
-           //g.drawString("Score:" + 0,(S_Width-font_me.stringWidth("Score:"+0))/2, g.getFont().getSize());
-
         } else {
             g.setColor(Color.red);
             g.setFont(new Font(Font.SERIF, Font.BOLD, 60));
@@ -225,8 +194,6 @@ public class Board extends JPanel implements ActionListener{
             g.setFont(new Font(Font.SERIF, Font.BOLD, 40));
             g.drawString("Press Enter to Replay", 20, 140);
 
-            // g.setColor(Color.darkGray);
-            // g.setFont(new Font(Font.SERIF, Font.BOLD, 20));
             int length = theSnake.getBody().size() - 1;
             if (length < 10) {
                 g.drawString("Score: " + length, 130, 180);
@@ -265,16 +232,12 @@ public class Board extends JPanel implements ActionListener{
 
             if ((keyCode == KeyEvent.VK_LEFT) && (currentDirection != "right")) {
                 currentDirection = "left";
-                // System.out.println("Left");
             } else if ((keyCode == KeyEvent.VK_DOWN) && (currentDirection != "up")) {
                 currentDirection = "down";
-                // System.out.println("Down");
             } else if ((keyCode == KeyEvent.VK_RIGHT) && (currentDirection != "left")) {
                 currentDirection = "right";
-                // System.out.println("Right");
             } else if ((keyCode == KeyEvent.VK_UP) && (currentDirection != "down")) {
                 currentDirection = "up";
-                // System.out.println("Up");
             } else if ((keyCode == KeyEvent.VK_ENTER) && (gameOver)) {
                 gameOver = false;
                 run();
@@ -289,8 +252,6 @@ public class Board extends JPanel implements ActionListener{
             move();
             eatFood();
         }
-        // System.out.printf("Snake at: %d, %d\n", theSnake.getHead().getRow(), theSnake.getHead().getColumn());
         repaint();
     }
-
 }

@@ -42,14 +42,4 @@ public class Snake {
         body.addFirst(head);
     }
 
-    public boolean death(Cell next) {
-        for (int i = 0; i < body.size(); i++) {
-            if (body.get(i) == next) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 }
