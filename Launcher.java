@@ -11,6 +11,7 @@ public class Launcher {
         theWindow.setResizable(false);
         theWindow.setLocationRelativeTo(null);
         theWindow.setVisible(true);
+        //int p = 3;
 
         newGame.run();
 

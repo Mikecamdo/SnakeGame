@@ -5,9 +5,9 @@ public class Cell {
     private boolean hasSnake = false; //if the snake is on the cell
 
     //Constructor
-    public Cell(int column, int row) {
-        this.column = column;
+    public Cell(int row, int column) {
         this.row = row;
+        this.column = column;
     }
 
     //Getter and Setter methods

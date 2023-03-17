@@ -75,20 +75,10 @@ public class Board extends JPanel implements ActionListener{
     }
 
     //Methods
-    public void run() {
-        //int p = 98;
-        
+    public void run() {        
         addFood();
         theTimer = new Timer(200, this);    
         theTimer.start();
-
-
-        // while (gameOver == false) {
-        //     int delay = 20000;
-        //     theTimer = new Timer(delay, this);    
-        //     theTimer.start();
-        //     move();
-        // }
     }
 
     public void addFood() { //randomly selects a cell to add food to
@@ -109,8 +99,11 @@ public class Board extends JPanel implements ActionListener{
     public Cell getNext(Cell current, String direction) {
         int row = current.getRow();
         int column = current.getColumn();
-        System.out.printf("Row: %d\n", row);
-        System.out.printf("Column: %d\n", column);
+        //
+        // System.out.printf("Row: %d\n", row);
+        // System.out.printf("Column: %d\n", column);
+        System.out.printf("Direction: %s\n", direction);
+        System.out.printf("Before: %d, %d\n", row, column);
 
         if (direction == "left") {
             column -= 1;
@@ -121,14 +114,16 @@ public class Board extends JPanel implements ActionListener{
         } else if (direction == "up") {
             row -= 1;
         }
+        System.out.printf("After: %d, %d\n", row, column);
 
         Cell next = theBoard[row][column];
+        System.out.printf("After After: %d, %d\n", next.getRow(), next.getColumn());
         return next;
     }
 
     public void move() {
+        // System.out.println("MOVING");
         theSnake.move(getNext(theSnake.getHead(), currentDirection));
-        System.out.println("POOP");
     }
 
     // public void loadImages() {
@@ -152,8 +147,8 @@ public class Board extends JPanel implements ActionListener{
 
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
-                int x = j * cellSize;
-                int y = i * cellSize;
+                int x = i * cellSize;
+                int y = j * cellSize;
                 g.drawRect(x, y, cellSize, cellSize);
             }
         }
@@ -162,7 +157,7 @@ public class Board extends JPanel implements ActionListener{
             g.setColor(Color.red);
             // foodX = 10;
             // foodY = 10;
-            System.out.printf("Printing food at: %d, %d\n", foodX, foodY);
+            //System.out.printf("Printing food at: %d, %d\n", foodX, foodY);
             g.fillOval(foodX * cellSize, foodY * cellSize, cellSize, cellSize);
 
             Cell head = theSnake.getHead();
@@ -170,11 +165,11 @@ public class Board extends JPanel implements ActionListener{
             int length = theSnake.getBody().size();
 
             g.setColor(Color.green);
-            g.fillRect(head.getRow() * cellSize, head.getColumn() * cellSize, cellSize, cellSize);
+            g.fillRect(head.getColumn() * cellSize, head.getRow() * cellSize, cellSize, cellSize);
             
             for(int i = 0; i < length; i++) {
                 g.setColor(new Color(50,180,0));
-                g.fillRect(body.get(i).getRow() * cellSize, body.get(i).getColumn() * cellSize, cellSize, cellSize);
+                g.fillRect(body.get(i).getColumn() * cellSize, body.get(i).getRow() * cellSize, cellSize, cellSize);
             }
         //    g.setColor(Color.blue);
         //    g.setFont(new Font("Ink Free",Font.BOLD,40));
@@ -207,7 +202,6 @@ public class Board extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent arg) {
-        int u = 98;
         if (!gameOver) {
             move();
         }
