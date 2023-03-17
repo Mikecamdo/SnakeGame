@@ -77,6 +77,7 @@ public class Board extends JPanel implements ActionListener{
 
     //Methods
     public void run() {  
+        currentDirection = "right";
         Cell start = new Cell(0 ,0);
         theSnake = new Snake(start);      
         addFood();
@@ -115,7 +116,7 @@ public class Board extends JPanel implements ActionListener{
          || ((theSnake.getHead().getColumn() == 19) && (currentDirection == "right"))
          || ((theSnake.getHead().getRow() == 0) && (currentDirection == "up"))
          || ((theSnake.getHead().getColumn() == 0) && (currentDirection == "left"))) {
-            System.out.println("GAME OVER!!!");
+            System.out.println("GAME OVER!!! 1");
             gameOver = true;
             theTimer.stop();
         } else if (!isExpanding) {
@@ -124,7 +125,7 @@ public class Board extends JPanel implements ActionListener{
             
             for(int i = 1; i < length; i++) {
                 if ((body.get(i).getRow() == body.get(0).getRow()) && (body.get(i).getColumn() == body.get(0).getColumn())) {
-                    System.out.println("GAME OVER!!!");
+                    System.out.println("GAME OVER!!! 2");
                     gameOver = true;
                     theTimer.stop();
                 }
@@ -205,6 +206,9 @@ public class Board extends JPanel implements ActionListener{
                     g.fillRect(body.get(i).getColumn() * cellSize, body.get(i).getRow() * cellSize, cellSize, cellSize);    
                 }
             }
+            g.setColor(Color.darkGray);
+            g.setFont(new Font(Font.SERIF, Font.BOLD, 20));
+            g.drawString("Score: " + (length - 1), 0, 20);
         //    g.setColor(Color.blue);
         //    g.setFont(new Font("Ink Free",Font.BOLD,40));
         //    FontMetrics font_me=getFontMetrics(g.getFont());
@@ -216,7 +220,15 @@ public class Board extends JPanel implements ActionListener{
             g.drawString("Game Over", 60, 80);
             g.setFont(new Font(Font.SERIF, Font.BOLD, 40));
             g.drawString("Press Enter to Replay", 20, 140);
-    
+
+            // g.setColor(Color.darkGray);
+            // g.setFont(new Font(Font.SERIF, Font.BOLD, 20));
+            int length = theSnake.getBody().size() - 1;
+            if (length < 10) {
+                g.drawString("Score: " + length, 130, 180);
+            } else {
+                g.drawString("Score: " + length, 120, 180);
+            }
         }
     }
 
